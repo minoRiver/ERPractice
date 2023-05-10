@@ -44,6 +44,10 @@ namespace Nameless
 
         #endregion
 
+        #region Public Fields
+        public static GameManager Instance;
+        #endregion
+
         #region Public Methods
 
         public void LeaveRoom()
@@ -54,6 +58,11 @@ namespace Nameless
         #endregion
 
         #region Private Methods
+
+        private void Start()
+        {
+            Instance = this;
+        }
 
         private void LoadArena()
         {
