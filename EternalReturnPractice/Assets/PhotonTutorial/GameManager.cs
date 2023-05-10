@@ -45,7 +45,9 @@ namespace Nameless
         #endregion
 
         #region Public Fields
+
         public static GameManager Instance;
+
         #endregion
 
         #region Public Methods
@@ -61,7 +63,20 @@ namespace Nameless
 
         private void Start()
         {
+            // "Player" 프리팹의 인스턴스를 생성하는 것은 정말로 쉽습니다. 룸에 들어갔을 때 바로 인스턴스를 생성할 필요가 있으며,
+            // 우리가 경기장을 로드 했다는 것을 의미 하는 GameManager 스크립트 Start() 에서 할 수 있습니다.
+            // 이 의미는 설계상에서 우리가 룸에 있다는 의미 입니다.
             Instance = this;
+
+            if(PlayerManager.LocalPlayerInstance == null)
+            {
+                Debug.Log($"We are Instantiating LocalPlayer from {SceneManagerHelper.ActiveSceneName}");
+                PhotonNetwork.Instantiate("PhotonTutorial/Player", new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+            }
+            else
+            {
+                Debug.Log($"Ignoring scene load for {SceneManagerHelper.ActiveSceneName}");
+            }
         }
 
         private void LoadArena()

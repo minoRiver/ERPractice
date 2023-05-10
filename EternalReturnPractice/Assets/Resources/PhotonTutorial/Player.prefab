@@ -1177,7 +1177,7 @@ GameObject:
   - component: {fileID: 6098241653987318216}
   - component: {fileID: 5293172548940358774}
   m_Layer: 0
-  m_Name: LIDailin_S002_LOD
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
