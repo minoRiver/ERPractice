@@ -82,7 +82,8 @@ namespace Nameless
         {
             cameraOffset.z = -distance;
             cameraOffset.y = height;
-            cameraTransform.position = Vector3.Lerp(cameraTransform.position, transform.position + transform.TransformVector(cameraOffset), smoothSpeed * Time.deltaTime);
+
+            cameraTransform.position = transform.position + cameraOffset;
             cameraTransform.LookAt(transform.position + centerOffset);
         }
 

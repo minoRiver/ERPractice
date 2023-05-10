@@ -6,6 +6,11 @@ namespace Nameless
 {
     public class PlayerManager : MonoBehaviourPunCallbacks, IHittable, IPunObservable
     {
+        [SerializeField]
+        private GameObject playerUiPrefab;
+
+        public float MoveSpeed = 5;
+
         public float MaxHp { get; set; } = 1000;
         public float CurrentHp { get; set; }
 
@@ -42,6 +47,16 @@ namespace Nameless
                 Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
             }
 
+            if(playerUiPrefab != null)
+            {
+                GameObject _uiGo = Instantiate(playerUiPrefab);
+                _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+            }
+            else
+            {
+                Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
+            }
+
             SceneManager.sceneLoaded += (scene, loadingMode) => { OnLevelWasLoaded(scene.buildIndex); };
         }
 
@@ -49,6 +64,7 @@ namespace Nameless
         {
            CurrentHp = MaxHp;
         }
+
 
         public void Hit(int damage, GameObject sender = null)
         {
@@ -84,6 +100,9 @@ namespace Nameless
             {
                 transform.position = new Vector3(0f, 5f, 0f);
             }
+
+            GameObject _uiGo = Instantiate(playerUiPrefab);
+            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
     }
 }

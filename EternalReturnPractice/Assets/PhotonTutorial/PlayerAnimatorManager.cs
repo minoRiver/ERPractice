@@ -3,16 +3,23 @@ using UnityEngine;
 
 namespace Nameless
 {
-    public class PlayerAnimatorManager : MonoBehaviourPun
+    public class PlayerAnimatorManager : MonoBehaviourPun, IPunObservable
     {
         private Animator animator;
 
-        private AnimatorStateInfo stateInfo;
-        private readonly int ID_RunTrigger = Animator.StringToHash("Run");
-        private readonly int ID_WaitTrigger = Animator.StringToHash("Wait");
-        private readonly int ID_AttackTrigger = Animator.StringToHash("Attack");
+        private readonly int ID_Run = Animator.StringToHash("Run");
+        private readonly int ID_Wait = Animator.StringToHash("Wait");
+
+        private bool isAttack = false;
+        private readonly int ID_Attack = Animator.StringToHash("Attack");
 
         #region MonoBehaviour Callbacks
+
+        public void AttackEnd()
+        {
+            isAttack = false;
+            animator.SetBool(ID_Attack, isAttack);
+        }
 
         private void Start()
         {
@@ -29,19 +36,40 @@ namespace Nameless
             if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
 
             if (!animator) return;
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
 
-            if (h != 0 || v != 0)
+            Vector3 moveDir = new Vector3(h, 0, v).normalized;
+
+
+            if ((h != 0 || v != 0) && isAttack == false)
             {
-                Vector3 dir = new Vector3(h, 0, v);
-                transform.rotation = Quaternion.LookRotation(dir);
-                animator.SetTrigger(ID_RunTrigger);
+                transform.rotation = Quaternion.LookRotation(moveDir);
+
+                animator.SetTrigger(ID_Run);
+                transform.position += moveDir * Time.deltaTime * 2f;
+            }
+            else if(moveDir == Vector3.zero && isAttack == false)
+            {
+                animator.SetTrigger(ID_Wait);
+            }
+
+            if (Input.GetMouseButtonDown(0) && isAttack == false)
+            {
+                isAttack = true;
+                animator.SetBool(ID_Attack, isAttack);
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(isAttack);
             }
             else
             {
-                animator.SetTrigger(ID_WaitTrigger);
+                isAttack = (bool)stream.ReceiveNext();
             }
         }
 

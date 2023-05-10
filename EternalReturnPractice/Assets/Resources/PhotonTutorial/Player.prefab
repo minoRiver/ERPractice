@@ -1175,7 +1175,8 @@ GameObject:
   - component: {fileID: 1813847212}
   - component: {fileID: 7938263667112086448}
   - component: {fileID: 6098241653987318216}
-  - component: {fileID: 5293172548940358774}
+  - component: {fileID: 6389240457552407843}
+  - component: {fileID: 5033278298305974377}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1262,8 +1263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36fe64bea83f5b4bba46cd52fad5357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 7
-  height: 3
+  distance: 4
+  height: 8
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   smoothSpeed: 0.125
@@ -1286,8 +1287,10 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 5954774216701880040}
   - {fileID: 6098241653987318216}
-  - {fileID: 5293172548940358774}
+  - {fileID: 6389240457552407843}
+  - {fileID: 5033278298305974377}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1307,7 +1310,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &5293172548940358774
+--- !u!114 &6389240457552407843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698689273992862005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1eaf541156ecf540b4b3da2b74fb466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUiPrefab: {fileID: 8819411250941894825, guid: d4a90d051a0900c4d9955f63cb3818b5,
+    type: 3}
+  MoveSpeed: 5
+--- !u!114 &5033278298305974377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1322,15 +1340,15 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Attack
   - Type: 9
     SynchronizeType: 1
     Name: Run
   - Type: 9
     SynchronizeType: 1
     Name: Wait
-  - Type: 9
-    SynchronizeType: 2
-    Name: Attack
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
