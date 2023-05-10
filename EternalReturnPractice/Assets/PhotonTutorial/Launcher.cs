@@ -15,7 +15,16 @@ namespace Nameless
         [SerializeField]
         private byte maxPlayerPerRoom = 4;
 
+        [Tooltip("사용자가 이름을 입력하고 연결하여 플레이할 수 있는 Ui 패널")]
+        [SerializeField]
+        private GameObject controlPanel;
+
+        [Tooltip("사용자에게 연결이 진행 중임을 알리는 UI 레이블")]
+        [SerializeField]
+        private GameObject progressLabel;
+
         #endregion
+
         #region Private Fields
 
         /// <summary>
@@ -24,6 +33,7 @@ namespace Nameless
         string gameVersion = "1";
 
         #endregion
+
 
         #region MonoBehaviour Callbacks
 
@@ -36,9 +46,11 @@ namespace Nameless
             // 매우 편리한 기능을 이용할 것 입니다: PhotonNetwork.AutomaticallySyncScene이 값이 true일 때 masterclient는 PhotonNetwork.LoadLevel()을 호출
             // 할 수 있고 모든 연결된 플레이어들은 동일한 레벨을 자동적으로 로드 할 것입니다.
         }
-        void Start()
+
+        private void Start()
         {
-            
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
 
         #endregion
@@ -51,8 +63,11 @@ namespace Nameless
         /// </summary>
         public void Connect()
         {
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
+
             // 연결되었는지 여부를 확인하고 연결되면 가입하고 그렇지 않으면 서버에 연결을 시작합니다.
-            if(PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected)
             {
                 // #Critical 이 시점에서 랜덤 룸에 참가하려면 필수입니다. 실패하면 OnJoinRandomFailed()에서 알림을 받고 랜덤룸을 생성합니다.
                 PhotonNetwork.JoinRandomRoom();
@@ -89,6 +104,8 @@ namespace Nameless
 
         public override void OnDisconnected(DisconnectCause cause)
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
