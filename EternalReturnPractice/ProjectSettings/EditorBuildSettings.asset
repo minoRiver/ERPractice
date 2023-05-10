@@ -4,7 +4,22 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/PhotonTutorial/Scenes/Launcher.unity
+    guid: a2fe7736e520fa84e87b8fb0a8cbeff0
+  - enabled: 1
+    path: Assets/PhotonTutorial/Scenes/Room For 1.unity
+    guid: c9ec9f4d694a0e14f9c18a5a2ae2d493
+  - enabled: 1
+    path: Assets/PhotonTutorial/Scenes/Room For 2.unity
+    guid: 9a291d00506b46b43af18e115039e6df
+  - enabled: 1
+    path: Assets/PhotonTutorial/Scenes/Room For 3.unity
+    guid: 1e42d226d11fd4e49bcddd942c4d8933
+  - enabled: 1
+    path: Assets/PhotonTutorial/Scenes/Room For 4.unity
+    guid: 2e0be68ea0cec8540b6074dbce1c6165
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 2520187f94874ed40a9bcff60d29d660, type: 2}

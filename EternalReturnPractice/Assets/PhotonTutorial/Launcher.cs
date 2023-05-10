@@ -30,7 +30,14 @@ namespace Nameless
         /// <summary>
         /// 이 클라이언트의 버전 번호입니다. 사용자는 게임 버전에 따라 서로 구분됩니다(이를 통해 획기적인 변경이 가능).
         /// </summary>
-        string gameVersion = "1";
+        private string gameVersion = "1";
+
+        /// <summary>
+        /// 현재 프로세스를 추적합니다. 연결은 비동기식이며 Photon의 여러 콜백에 기반하기 때문입니다,
+        /// Photon의 콜백을 받을 때 동작을 적절히 조정하기 위해 이를 추적해야 합니다.
+        /// 일반적으로 OnConnectedToMaster() 콜백에 사용됩니다.
+        /// </summary>
+        private bool isConnecting;
 
         #endregion
 
@@ -63,6 +70,8 @@ namespace Nameless
         /// </summary>
         public void Connect()
         {
+            // 게임에서 돌아오면 연결되었다는 콜백을 받게 되므로 그때 무엇을 해야 할지 알아야 하므로 방에 참여하려는 의지를 추적합니다.
+            isConnecting = true;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
 
@@ -86,8 +95,15 @@ namespace Nameless
         public override void OnConnectedToMaster()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-            // #Critical: 가장 먼저 시도하는 것은 잠재적인 기존 방에 가입하는 것입니다. 존재하면 좋고, 그렇지 않으면 OnJoinRandomFailed()로 다시 호출됩니다.
-            PhotonNetwork.JoinRandomRoom();
+
+            // 방에 참여하려고 시도하지 않는다면 아무 작업도 하지 않습니다.
+            // 이 경우 isConnecting이 거짓인 경우는 일반적으로 게임을 잃거나 종료했을 때이며, 이 레벨이 로드되면 OnConnectedToMaster가 호출됩니다.
+            // 아무것도 하지 않습니다.
+            if (isConnecting)
+            {
+                // #Critical: 가장 먼저 시도하는 것은 잠재적인 기존 방에 가입하는 것입니다. 존재하면 좋고, 그렇지 않으면 OnJoinRandomFailed()로 다시 호출됩니다.
+                PhotonNetwork.JoinRandomRoom();
+            }
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
@@ -100,6 +116,16 @@ namespace Nameless
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+
+            // #Critical : 첫 번째 플레이어인 경우에만 로드하고, 그렇지 않은 경우 인스턴스 씬을 동기화하기 위해 `PhotonNetwork.AutomaticallySyncScene`에 의존합니다.
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the 'Room For 1' ");
+
+                // #Critical
+                // Load the Room Level
+                PhotonNetwork.LoadLevel("Room For 1");
+            }
         }
 
         public override void OnDisconnected(DisconnectCause cause)
