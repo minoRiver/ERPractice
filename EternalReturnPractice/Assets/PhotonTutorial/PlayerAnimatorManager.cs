@@ -1,8 +1,9 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace Nameless
 {
-    public class PlayerAnimatorManager : MonoBehaviour
+    public class PlayerAnimatorManager : MonoBehaviourPun
     {
         private Animator animator;
 
@@ -10,6 +11,7 @@ namespace Nameless
         private readonly int ID_RunTrigger = Animator.StringToHash("Run");
         private readonly int ID_WaitTrigger = Animator.StringToHash("Wait");
         private readonly int ID_AttackTrigger = Animator.StringToHash("Attack");
+
         #region MonoBehaviour Callbacks
 
         private void Start()
@@ -23,6 +25,9 @@ namespace Nameless
 
         private void Update()
         {
+            // 인스턴스가 client 어플리케이션에서 제어되고 있다면 photonView.IsMine은 true일 것이다
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
+
             if (!animator) return;
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
