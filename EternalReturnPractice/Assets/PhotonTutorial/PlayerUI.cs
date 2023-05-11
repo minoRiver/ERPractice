@@ -73,11 +73,11 @@ namespace Nameless
             target = t;
 
             targetTransform = target.transform;
-            CharacterController controller = target.GetComponent<CharacterController>();
+            CapsuleCollider controller = target.GetComponent<CapsuleCollider>();
 
             if(controller != null)
             {
-                characterControllerHeight = controller.height;
+                characterControllerHeight = controller.bounds.size.y;
             }
 
             if(playerNameText != null)

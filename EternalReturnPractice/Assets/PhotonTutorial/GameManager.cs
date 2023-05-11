@@ -71,7 +71,7 @@ namespace Nameless
             if(PlayerManager.LocalPlayerInstance == null)
             {
                 Debug.Log($"We are Instantiating LocalPlayer from {SceneManagerHelper.ActiveSceneName}");
-                PhotonNetwork.Instantiate("PhotonTutorial/Player", new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                PhotonNetwork.Instantiate("PhotonTutorial/Player", new Vector3(0f, 3f, 0f), Quaternion.identity, 0);
             }
             else
             {
